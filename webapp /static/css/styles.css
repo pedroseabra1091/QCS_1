@@ -1,0 +1,14 @@
+body,html{
+	background-color: white;
+}
+.columns{
+	margin-top: 180px;
+}
+.menu{
+	padding-top: 74px;
+    padding-left: 8px;
+}
+.buttonPosition{
+	padding-top: 20px;
+	text-align: right;
+}
