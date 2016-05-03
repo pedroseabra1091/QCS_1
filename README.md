@@ -10,4 +10,7 @@
 
 # Tecnologies
   
-  -Flask, Java, React, Spin
+  - Flask
+  - Java 
+  - React 
+  - Spin
