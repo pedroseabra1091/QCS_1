@@ -77,7 +77,27 @@ var StandardSensitivity = React.createClass({
     	console.log('handle submit');
     	this.setState({
     		results:true,
-    	})
+    	});
+    	var data = {
+    		carbAmount: this.state.carbAmount,
+			ratio: this.state.ratio,
+			beforeMeal: this.state.beforeMeal,
+			target:this.state.target,
+			personalSensitivity:this.state.personalSensitivity,
+    	}
+
+    	$.ajax({
+    		dataType: "json",
+    		type:"POST",
+    		url:"api/v1/standardSensitivity",
+    		data: data,
+    		success: function(result){
+    			console.log(result.message);
+    		},
+    		error: function(){
+    			console.log('error');
+    		}
+    	});
     },
 
 	render: function() {
