@@ -1,6 +1,8 @@
 body,html{
 	background-color: white;
+	font-family: 'Lato', sans-serif;
 }
+
 .columns{
 	margin-top: 180px;
 }
@@ -11,4 +13,45 @@ body,html{
 .buttonPosition{
 	padding-top: 20px;
 	text-align: right;
+}
+
+.inlineblocked{
+	display: inline-block;
+}
+
+.backgroundDiv{
+	margin-top: 60px;
+}
+
+.formMarginRight{
+	margin-right: 42px; 
+}
+
+.fullHeight{
+	height: 100vh;
+    position: fixed;
+    background-color: #1fc8db;
+    top: 0px;
+}
+
+.white{
+	color:white;
+}
+
+.resultsHeader{
+	font-family: 'Josefin Slab', serif;
+	padding:20px;
+}
+
+.center{
+	display: block;
+	margin:auto;
+}
+
+.centerText{
+	text-align: center;
+}
+
+.longPaddingTop{
+	padding-top: 60px;
 }

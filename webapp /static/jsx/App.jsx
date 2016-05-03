@@ -15,6 +15,7 @@ var App = React.createClass({
 
 	handleClick: function(type,evt){
 		if(type == 'Standard'){
+			console.log('entered type')
 			this.setState({
 				background: false,
 				standard : true,
@@ -22,6 +23,7 @@ var App = React.createClass({
 			})
 		}
 		else if(type == 'Personal'){
+			console.log('entered type');
 			this.setState({
 				background:false,
 				standard: false,
@@ -29,6 +31,7 @@ var App = React.createClass({
 			})
 		}
 		else if(type == 'Background'){
+			console.log('entered type');
 			this.setState({
 				background: true,
 				personal:false,
@@ -39,23 +42,35 @@ var App = React.createClass({
 	},
 
 	render: function() {
+		var style ={
+			'backgroundColor' : 'transparent'	
+		};
+
+		var activeStyle = {	
+		    backgroundColor: "#1fc8db",
+			color: "white"
+		};
+
 		return (
+
 			<div className = "columns">
-				<div className="column is-one-quarter menu">
+				<div className="column is-2 menu">
 					<aside className="menu">
 					  <p className="menu-label">
 					    Insulin Calculator
 					  </p>
 					  <ul className="menu-list">
-					    <li onClick = {this.handleClick.bind(null,'Standard')}><a>Standard Sensitivity</a></li>
-					    <li onClick = {this.handleClick.bind(null,'Personal')}><a>Personal Sensitivity</a></li>
-					    <li onClick = {this.handleClick.bind(null,'Background')}><a>Background insuline dose</a></li>
+					    <li onClick = {this.handleClick.bind(null,'Standard')}><a style={this.state.standard ? activeStyle : style}>Standard Sensitivity</a></li>
+					    <li onClick = {this.handleClick.bind(null,'Personal')}><a style={this.state.personal ? activeStyle : style}>Personal Sensitivity</a></li>
+					    <li onClick = {this.handleClick.bind(null,'Background')}><a style={this.state.background ? activeStyle : style}>Background insuline dose</a></li>
 					  </ul>
 					</aside>
 				</div>
-				{this.state.standard ? <PersonalSensitivity /> : null}
-				{this.state.personal ? <StandardSensitivity /> : null}
-				{this.state.background ? <BackgroundDose /> : null}
+				<div className = "column">
+					{this.state.standard ? <StandardSensitivity /> : null}
+					{this.state.personal ? <PersonalSensitivity  /> : null}
+					{this.state.background ? <BackgroundDose  /> : null}
+				</div>
 			</div>
 		);
 	}
