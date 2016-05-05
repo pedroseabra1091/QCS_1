@@ -12,8 +12,6 @@ var PersonalSensitivity = React.createClass({
 			currentPhysical:'',
 			currentBlood:'',
 			results:false,
-			personalState: this.props.personalState,
-			samples:true
 		});
 	},
 
@@ -81,8 +79,29 @@ var PersonalSensitivity = React.createClass({
     	evt.preventDefault();
     	this.setState({
     		results:true,
-    	})
-    },
+    	});
+    	var data = {
+    		todayPhysical:this.state.todayPhysical ,
+			samplesPhysical:this.state.samplesPhysical,
+			bloodDrops: this.state.bloodDrops,
+    	}
+		$.ajax({
+		type:"POST",
+		url:"/api/v1/backgroundDose",
+		contentType: 'application/json',
+		dataType: "json",
+		data: JSON.stringify(data),
+		success: function(result){
+			console.log(result.details);
+			this.setState({
+				findings: result.value,
+				message: result.message
+			})
+		}.bind(this),
+		error: function(){
+			console.log('error');
+		}
+    }),
 
 	render: function() {
 		return (

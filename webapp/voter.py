@@ -22,7 +22,7 @@ class Voter:
 			"http://webservice-sqdcourse.rhcloud.com/InsulinDoseCalculator?wsdl",
 			"http://qcs07.dei.uc.pt:8080/InsulinCalculator?wsdl",
 			"http://localhost:8080/InsulinCalculatorTomcat/InsulinCalculator?wsdl"
-			]
+		]
 
 		self.sensitivity = 1
 		self.wsClients = []
@@ -49,7 +49,7 @@ class Voter:
 			elif method==2:
 				res = [self.wsToUse[thread_id],cur.service.mealtimeInsulinDose(args[0],args[1],args[2],args[3],args[4])]
 			elif method==3:
-				res = [self.wsToUse[thread_id],cur.service.personalSensitivity(args)]
+				res = [self.wsToUse[thread_id],cur.service.personalSensitivity(args[0],args[1],args[2],args[3],args[4])]
 
 			if self.time_flag==False:
 				self.wsResults.append(res)
@@ -86,7 +86,7 @@ class Voter:
 				break;
 
 		if self.numberOfValidWsResults < useWebservicesNumber:
-			return (-1,0)
+			return (-1,0,'Majority not occured')
 
 		self.time_flag=True
 		

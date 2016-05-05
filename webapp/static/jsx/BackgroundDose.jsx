@@ -7,8 +7,9 @@ var BackgroundDose = React.createClass({
 	getInitialState:function() {
 	    return {
 	        weight : '',
+	        findings: '',
 	        results : false,
-	        backgroundState: this.props.backgroundState
+	        message: ''
 	    };
 	},
 
@@ -53,10 +54,32 @@ var BackgroundDose = React.createClass({
     },
 
     handleSubmit:function(evt){
-    	evt.preventDefault();
+    	
     	this.setState({
     		results: true,
     	})
+
+    	var data = {
+    		weight : this.state.weight
+    	};
+		evt.preventDefault();
+    	$.ajax({
+    		type:"POST",
+    		url:"/api/v1/backgroundDose",
+    		contentType: 'application/json',
+    		dataType: "json",
+    		data: JSON.stringify(data),
+    		success: function(result){
+    			console.log(result.details);
+    			this.setState({
+    				findings: result.value,
+    				message: result.message
+    			})
+    		}.bind(this),
+    		error: function(){
+    			console.log('error');
+    		}
+    	});
     },
 
 	render: function() {
@@ -76,7 +99,7 @@ var BackgroundDose = React.createClass({
 				</div>
 				{this.state.results ? 	
 					<div className="column is-5 inlineblocked fullHeight" >
-						<Results />
+						<Results value= {this.state.findings} message={this.state.message} />
 					</div>
 				: null}	
 			</div>
