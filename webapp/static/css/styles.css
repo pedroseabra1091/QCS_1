@@ -18,6 +18,9 @@ body,html{
 .inlineblocked{
 	display: inline-block;
 }
+.block{
+	display:block;
+}
 
 .backgroundDiv{
 	margin-top: 60px;
@@ -54,4 +57,7 @@ body,html{
 
 .longPaddingTop{
 	padding-top: 60px;
+}
+.marginLeft{
+	margin-left: 20px;
 }

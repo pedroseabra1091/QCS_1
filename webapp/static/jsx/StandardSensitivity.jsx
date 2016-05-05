@@ -8,68 +8,117 @@ var StandardSensitivity = React.createClass({
 		console.log('entering inital state');
 		return({
 			carbAmount: '',
-			ratio : '60-120',
+			ratio : '',
 			beforeMeal : '',
 			target: '',
-			personalSensitivity: '50',
+			personalSensitivity: '',
 			results:false,
 		});
 	},
 
 	componentDidMount: function(){
+		this.checkEmptyInputs();
 		console.log('Standard Sensivity Mounted');	
-		console.log(this.state.results);
 	},
 
 	handleChange:function(type,evt){
-		if(type == 'carbAmout'){
-			this.setState({
-				carbAmount : evt.target.value
-			})
-			
+
+		if(type == 'carbAmount'){
+			if(evt.target.value >= 60 && evt.target.value <= 120){
+				this.setState({
+					carbAmount : evt.target.value
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
+			else{
+				this.setState({
+					carbAmount: ''
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
 		}
 		else if(type == 'ratio'){
-			this.setState({
-				ratio : evt.target.value
-			})
-			
+			if(evt.target.value >= 10 && evt.target.value <= 15){
+				this.setState({
+					ratio: evt.target.value
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+				
+			}
+			else{
+				this.setState({
+					ratio: ''
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
 		}
 		else if(type == 'beforeMeal'){
-			this.setState({
-				beforeMeal : evt.target.value
-			})
-			
+			if(evt.target.value >= 120 && evt.target.value <= 250){
+				this.setState({
+					beforeMeal: evt.target.value
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+				
+			}
+			else{
+				this.setState({
+					beforeMeal: ''
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
 		}
 		else if(type == 'target'){
-			this.setState({
-				target : evt.target.value
-			})
-			
+			if(evt.target.value >= 80 && evt.target.value <= 120){
+				this.setState({
+					target: evt.target.value
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}		
+			else{
+				this.setState({
+					target: ''
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}	
 		}
 		else if(type == 'personalSensitivity'){
-			this.setState({
-				personalSensitivity : evt.target.value
-			})
-			
+			if(evt.target.value >= 15 && evt.target.value <= 100){
+				this.setState({
+					personalSensitivity: evt.target.value
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
+			else{
+				this.setState({
+					personalSensitivity: ''
+				}, function changed(){
+					this.checkEmptyInputs();
+				});
+			}
 		}
 		this.checkEmptyInputs();
 	},
 
     checkEmptyInputs:function(){
-      
-      $('form > p > input').keyup(function() {
-        var empty = false;
-        $('form > p > input').each(function() {
-            if ($(this).val() == '') {
-                empty = true;
-            }
-        });
-        if (empty) {
-            $('#calculateButton').attr('disabled', 'disabled');
-        } else {
-            $('#calculateButton').removeAttr('disabled');        
+      	var allow = true;
+        if(this.state.carbAmount == '' || this.state.ratio == '' || this.state.beforeMeal == '' || this.state.target == '' || this.state.personalSensitivity == ''){
+      		console.log('changes');
+      		allow = false;
         }
-     });
+	    if (!allow) {
+	        $('#calculateButton').attr('disabled', 'disabled');
+	    } else {
+	        $('#calculateButton').removeAttr('disabled');        
+	    }
     },
 
     handleSubmit:function(evt){
@@ -108,23 +157,23 @@ var StandardSensitivity = React.createClass({
 					<form onSubmit={this.handleSubmit}>
 						<label className="label">Carbohydrate amount (g)</label>
 						<p className="control">
-						  <input className="input" onChange={this.handleChange.bind(null,'carbAmount')} type="text" placeholder="60 - 120" />
+						  <input className="input" onChange={this.handleChange.bind(null,'carbAmount')} type="number" placeholder="60 - 120" />
 						</p>
 						<label className="label">Carbohydrate to insulin ratio (mg/dl)</label>
 						<p className="control">
-						  <input className="input" onChange={this.handleChange.bind(null,'ratio')} type="text" placeholder="60-120" />
+						  <input className="input" onChange={this.handleChange.bind(null,'ratio')} type="number" placeholder="10 - 15" />
 						</p>
 						<label className="label">Before meal blood sugar(mg/dl)</label>
 						 <p className = "control">
-						 	<input className="input" onChange={this.handleChange.bind(null,'beforeMeal')} type="text" placeholder="100" />
+						 	<input className="input" onChange={this.handleChange.bind(null,'beforeMeal')} type="number" placeholder="120 - 250" />
 						</p>
 						<label className="label">Target meal blood sugar(mg/dl)</label>
 						 <p className = "control">
-						 	<input className="input" onChange={this.handleChange.bind(null,'target')} type="text" placeholder="80-120" />
+						 	<input className="input" onChange={this.handleChange.bind(null,'target')} type="number" placeholder="80-120" />
 						</p>	
 						<label className="label">Personal sensitivity(mg/dl)</label>
 						 <p className = "control">
-						 	<input className="input" onChange={this.handleChange.bind(null,'personalSensitivity')} type="text" placeholder = "50" />
+						 	<input className="input" onChange={this.handleChange.bind(null,'personalSensitivity')} type="number" placeholder = "15 - 100" />
 						</p>
 						<p className="control buttonPosition">
 							<button id = "calculateButton" className="button is-medium is-info" disabled = "disabled">Calculate insulin dose</button>
