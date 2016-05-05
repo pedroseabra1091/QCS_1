@@ -69,6 +69,8 @@ class Voter:
 		thread_id = 0
 		self.wsToUse = []
 		self.wsToUse = self.wsdlFiles[self.retry_number:self.retry_number+useWebservicesNumber]
+		for i in args:
+			print i
 		if len(self.wsToUse) < useWebservicesNumber:
 			self.wsToUse.append(self.wsdlFiles[:self.retry_number+useWebservicesNumber-len(self.wsdlFiles)])
 
@@ -135,12 +137,12 @@ class Voter:
 		return (-1, 0,ret_message)
 
 
-if __name__ == '__main__':
+'''if __name__ == '__main__':
 
 	logging.basicConfig(level=logging.INFO)
 	cenas = Voter()
 	res = cenas.calcResult(2,[80,12,120,100,50])
 	print res[2]
 	#print cenas.retry(2,[80,12,120,100,50])
-	#print cenas.retry(2,[80,12,120,100,50])
+	#print cenas.retry(2,[80,12,120,100,50])'''
 	
