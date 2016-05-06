@@ -1,5 +1,5 @@
 from flask import Blueprint,jsonify,request
-import voter
+import new_voter
 
 backgroundDose = Blueprint('backgroundDose',__name__)
 
@@ -8,7 +8,7 @@ def getBackgroundDose():
 
 	weight = request.json['weight']
 
-	voterCaller = voter.Voter()
+	voterCaller = new_voter.Voter()
 	outcome = voterCaller.calcResult(1,weight)
 
 	return jsonify({

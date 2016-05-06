@@ -1,5 +1,5 @@
 from flask import Blueprint,jsonify,request
-import voter
+import new_voter
 
 standardSensitivity = Blueprint('standardSensitivity',__name__)
 
@@ -12,7 +12,7 @@ def getResultsStandardSensitivity():
 	target = request.json['target']
 	personalSensitivity = request.json['personalSensitivity']
 
-	voterCaller = voter.Voter()
+	voterCaller = new_voter.Voter()
 	outcome = voterCaller.calcResult(2,[carbAmount,ratio,beforeMeal,target,personalSensitivity])
 
 	print '###########OUTCOME###############'

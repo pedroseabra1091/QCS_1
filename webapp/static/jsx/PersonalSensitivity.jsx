@@ -23,35 +23,36 @@ var PersonalSensitivity = React.createClass({
 		if(type == 'todayPhysical'){
 			if(evt.target.value >= 0 && evt.target.value <= 10)
 			this.setState({
-				data : evt.target.value
+				todayPhysical : evt.target.value
 			})
-			this.checkEmptyInputs();
+			//this.checkEmptyInputs();
 		}
 		else if(type == 'currentPhysical'){
 			this.setState({
 				currentPhysical : evt.target.value
 			})
-			this.checkEmptyInputs();
 		}
 		else if(type == 'currentBlood'){
 			this.setState({
 				currentBlood : evt.target.value
 			})
-			this.checkEmptyInputs();
 		}
-		this.checkEmptyInputs();
 	},
 
 	checkEmptyInputs:function(){
-
+		console.log("checking inputs...");
 	  	var allow = true;
-        if(this.state.todayPhysical == '' || this.state.samplesPhysical == '' || this.state.bloodDrops == ''){
+	  	console.log("todayPhysical: " + this.state.todayPhysical);
+	  	console.log("number of pairs: " + this.state.samplesPhysical.length);
+        if(this.state.todayPhysical == '' || this.state.samplesPhysical.length < 2 ){
+        	console.log("button disabled");
       		allow = false;
         }
 	    if (!allow) {
 	        $('#calculateButton').attr('disabled', 'disabled');
 	    } else {
-	        $('#calculateButton').removeAttr('disabled');        
+	        $('#calculateButton').removeAttr('disabled');    
+	        console.log("button enabled");
 	    }
      },
 
@@ -77,48 +78,66 @@ var PersonalSensitivity = React.createClass({
 
     handleSubmit:function(evt){
     	evt.preventDefault();
-    	this.setState({
+    	/*this.setState({
     		results:true,
-    	});
+    	});*/
+		console.log("handling personal sensitivity submit...");
     	var data = {
     		todayPhysical:this.state.todayPhysical ,
 			samplesPhysical:this.state.samplesPhysical,
 			bloodDrops: this.state.bloodDrops,
     	}
 		$.ajax({
-		type:"POST",
-		url:"/api/v1/backgroundDose",
-		contentType: 'application/json',
-		dataType: "json",
-		data: JSON.stringify(data),
-		success: function(result){
-			console.log(result.details);
-			this.setState({
-				findings: result.value,
-				message: result.message
-			})
-		}.bind(this),
-		error: function(){
-			console.log('error');
-		}
-    }),
+			type:"POST",
+			url:"/api/v1/personalSensitivity",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(data),
+			success: function(result){
+				console.log(result.details);
+				this.setState({
+					findings: result.value,
+					message: result.message,
+					results:true
+				})
+			}.bind(this),
+			error: function(){
+				console.log('error');
+			}
+    	})
+	},
 
 	render: function() {
+		var currentPairs = [];
+		console.log("rendering");
+		this.checkEmptyInputs();
+		for (var i = this.state.samplesPhysical.length - 1; i >= 0; i--) {
+			currentPairs.push(
+				<tr key={i}>
+					<td>{this.state.samplesPhysical[i]}</td>
+					<td>{this.state.bloodDrops[i]}</td>
+				</tr>
+			);
+		}
+
 		return (
 			<div>
 				<div className = "column is-5 inlineblocked formMarginRight">
 					<h1 className="title is-1">Personal insulin sensitivity</h1>
-					<form className = "inlineblocked" >
+					<form className = "inlineblocked" onSubmit={this.handleSubmit}>
 						<label className="label">Physical activity level</label>
 						 <p className = "control">
 						 	<input className="input" onChange={this.handleChange.bind(null,'todayPhysical')} type="text" placeholder="0-10" />
 						</p>
 						<p className="control buttonPosition inlineblocked marginLeft">
-		  					<button onSubmit={this.handleSubmit} id="calculateButton" className="button is-medium is-info" disabled="disabled">Calculate insuline dose</button>
+		  					<button id="calculateButton" className="button is-medium is-info" disabled="disabled">Calculate insuline dose</button>
 		  				</p>
 		  			</form>
-		  		</div> 
-		  		<div className = "column is-1 inlineblocked formMarginRight">
+					<table>
+						<tbody>
+							{currentPairs}
+						</tbody>
+					</table>
 					<form className = "inlineblocked">	
 						<label className="label">Samples of physical activity</label>
 						 <p className = "control">
@@ -131,13 +150,14 @@ var PersonalSensitivity = React.createClass({
 						<p id = 'samples' className="control buttonPosition inlineblocked">
 	  						<button id="calculateButton" onClick = {this.handleClick} className="button is-medium" >Add pair of samples</button>
 	  					</p>
-	  				 </form>
-	  			  </div>
-				  {this.state.results ? 	
+	  				</form>
+		  		</div> 
+			  	{this.state.results ? 	
 					<div className="column is-5 inlineblocked fullHeight" >
-						<Results />
+						<Results value={this.state.findings} message = {this.state.message}/>
 					</div>
-				: null}	
+					: null
+				}	
 			</div>
 		);
 	}

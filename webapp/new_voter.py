@@ -65,7 +65,6 @@ class Voter:
 				break
 
 		print "tempo", time()-start_time
-		print "tamanhos??", len(self.runtime_wsdlList)
 
 		self.time_flag = True
 
