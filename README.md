@@ -1,4 +1,4 @@
-#<div align = "center"> Software Quality and Confiability Course </div>
+<div align = "center"> Software Quality and Confiability Course </div>
 
 ## <div align = "center">Pratical Assignment #1</div>
 
